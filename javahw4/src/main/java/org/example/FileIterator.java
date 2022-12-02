@@ -7,19 +7,26 @@ import java.util.Iterator;
 import java.util.Vector;
 
 public class FileIterator implements Iterator<String> {
-    private Vector<String> lines;
+    private final Vector<String> lines;
     private int vectorIterator;
     private BufferedReader reader;
     public FileIterator(String pathToFile) throws IOException {
-        reader =  new BufferedReader(new FileReader(pathToFile));
-        vectorIterator = 0;
-        lines = new Vector<String>();
-        String line = reader.readLine();
-        while (line != null) {
-            lines.add(line);
-            line = reader.readLine();
+        try {
+            reader =  new BufferedReader(new FileReader(pathToFile));
+            vectorIterator = 0;
+            lines = new Vector<String>();
+            String line = reader.readLine();
+            while (line != null) {
+                lines.add(line);
+                line = reader.readLine();
+            }
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
         }
-        reader.close();
+
+
     }
 
     @Override
